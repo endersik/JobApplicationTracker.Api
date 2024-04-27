@@ -1,0 +1,5 @@
+GET http://localhost:5210/applications
+
+###
+
+GET http://localhost:5210/applications/1
