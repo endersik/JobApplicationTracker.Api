@@ -2,4 +2,35 @@ GET http://localhost:5210/applications
 
 ###
 
-GET http://localhost:5210/applications/1
+GET http://localhost:5210/applications/4
+
+###
+
+POST http://localhost:5210/applications
+Content-Type: application/json
+
+{
+    "companyName": "JP Morgan",
+    "position": "DevOps Engineer",
+    "seniority": 3,
+    "deadline": "2024-02-02",
+    "isApplied": false
+}
+
+###
+
+PUT http://localhost:5210/applications/1
+Content-Type: application/json
+
+{
+    "id": 2,
+    "companyName": "Apple",
+    "position": "Swift Developer",
+    "seniority": 3,
+    "deadline": "2024-05-12",
+    "isApplied": true
+}
+
+###
+
+DELETE http://localhost:5210/applications/2

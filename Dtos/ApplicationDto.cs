@@ -15,5 +15,5 @@ public record class ApplicationDto(
     string Position,
     Seniority Seniority,
     DateOnly Deadline,
-    bool isApplied
+    bool IsApplied
     );
