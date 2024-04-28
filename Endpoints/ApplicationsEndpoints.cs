@@ -27,7 +27,8 @@ public static class ApplicationsEndpoints
     ];
 
     public static RouteGroupBuilder MapApplicationsEndpoints(this WebApplication app){
-        var group = app.MapGroup("applications");
+        var group = app.MapGroup("applications")
+                        .WithParameterValidation();
 
         group.MapGet("/", () => applications);
 

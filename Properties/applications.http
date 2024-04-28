@@ -2,7 +2,7 @@ GET http://localhost:5210/applications
 
 ###
 
-GET http://localhost:5210/applications/4
+GET http://localhost:5210/applications/3
 
 ###
 
@@ -12,14 +12,14 @@ Content-Type: application/json
 {
     "companyName": "JP Morgan",
     "position": "DevOps Engineer",
-    "seniority": 3,
+    "seniority": 1,
     "deadline": "2024-02-02",
     "isApplied": false
 }
 
 ###
 
-PUT http://localhost:5210/applications/1
+PUT http://localhost:5210/applications/5
 Content-Type: application/json
 
 {
