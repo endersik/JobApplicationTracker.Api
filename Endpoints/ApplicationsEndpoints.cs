@@ -43,7 +43,7 @@ public static class ApplicationsEndpoints
             ApplicationDto application = new(
                 applications.Count + 1,
                 newApplication.CompanyName,
-                newApplication.Position,
+                newApplication.Title,
                 newApplication.Seniority,
                 newApplication.Deadline,
                 newApplication.IsApplied
@@ -64,7 +64,7 @@ public static class ApplicationsEndpoints
             applications[index] = new ApplicationDto(
                 id,
                 updatedApplication.CompanyName,
-                updatedApplication.Position,
+                updatedApplication.Title,
                 updatedApplication.Seniority,
                 updatedApplication.Deadline,
                 updatedApplication.IsApplied

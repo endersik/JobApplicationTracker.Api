@@ -12,7 +12,7 @@ public enum Seniority{
 public record class ApplicationDto(
     int Id,
     string CompanyName,
-    string Position,
+    string Title,
     Seniority Seniority,
     DateOnly Deadline,
     bool IsApplied
