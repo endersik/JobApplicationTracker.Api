@@ -14,26 +14,27 @@ public static class ApplicationsEndpoints
         var group = app.MapGroup("applications")
                         .WithParameterValidation();
 
-        group.MapGet("/", (ApplicationTrackerContext dbContext) =>
-             dbContext.Applications
+        group.MapGet("/", async (ApplicationTrackerContext dbContext) =>
+             await  dbContext.Applications
                       .Include(application => application.Title)
                       .Select(application => application.ToApplicationSummaryDto())
-                      .AsNoTracking());
+                      .AsNoTracking()
+                      .ToListAsync());
 
-        group.MapGet("/{id}", (int id, ApplicationTrackerContext dbContext) => {
-            Application? application = dbContext.Applications.Find(id);
+        group.MapGet("/{id}", async (int id, ApplicationTrackerContext dbContext) => {
+            Application? application = await dbContext.Applications.FindAsync(id);
 
             return application is null ?
                 Results.NotFound() : Results.Ok(application.ToApplicationDetailsDto());
             })
             .WithName(GetApplicationEndpointName);
 
-        group.MapPost("/", (CreateApplicationDto newApplication, ApplicationTrackerContext dbContext) => {
+        group.MapPost("/", async (CreateApplicationDto newApplication, ApplicationTrackerContext dbContext) => {
             
             Application application = newApplication.ToEntity();
 
             dbContext.Applications.Add(application);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             return Results.CreatedAtRoute(
                 GetApplicationEndpointName,
@@ -41,8 +42,8 @@ public static class ApplicationsEndpoints
                 application.ToApplicationDetailsDto());
         });
 
-        group.MapPut("/{id}", (int id, UpdateApplicationDto updatedApplication, ApplicationTrackerContext dbContext) => {
-            var existingApplication = dbContext.Applications.Find(id);
+        group.MapPut("/{id}", async (int id, UpdateApplicationDto updatedApplication, ApplicationTrackerContext dbContext) => {
+            var existingApplication = await dbContext.Applications.FindAsync(id);
 
             if(existingApplication is null){
                 return Results.NotFound();
@@ -52,16 +53,16 @@ public static class ApplicationsEndpoints
                      .CurrentValues
                      .SetValues(updatedApplication.ToEntity(id));
             
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
         });
 
-        group.MapDelete("/{id}", (int id, ApplicationTrackerContext dbContext) => {
+        group.MapDelete("/{id}", async (int id, ApplicationTrackerContext dbContext) => {
             
-            dbContext.Applications
+            await   dbContext.Applications
                     .Where(application => application.Id == id)
-                    .ExecuteDelete();
+                    .ExecuteDeleteAsync();
             
             return Results.NoContent();
         }); 

@@ -11,6 +11,6 @@ var app = builder.Build();
 
 app.MapApplicationsEndpoints();
 
-app.MigrateDb();
+await app.MigrateDbAsync();
 
 app.Run();
