@@ -10,9 +10,9 @@ POST http://localhost:5210/applications
 Content-Type: application/json
 
 {
-    "companyName": "Apple",
-    "titleId": 3,
-    "deadline": "2024-05-12"
+    "companyName": "Getir",
+    "titleId": 1,
+    "deadline": "2024-01-30"
 }
 
 ###
