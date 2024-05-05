@@ -11,18 +11,14 @@ public static class ApplicationsEndpoints
             1,
             "Microsoft", 
             "Cloud Engineer",
-            Seniority.Junior,
-            new DateOnly(2024, 3, 17),
-            true
+            new DateOnly(2024, 3, 17)
         ),
 
         new (
             2,
             "Apple",
             "iOS Developer",
-            Seniority.Intern,
-            new DateOnly(2024, 5, 12),
-            false
+            new DateOnly(2024, 5, 12)
         )
     ];
 
@@ -44,9 +40,7 @@ public static class ApplicationsEndpoints
                 applications.Count + 1,
                 newApplication.CompanyName,
                 newApplication.Title,
-                newApplication.Seniority,
-                newApplication.Deadline,
-                newApplication.IsApplied
+                newApplication.Deadline
             );
 
             applications.Add(application);
@@ -65,9 +59,7 @@ public static class ApplicationsEndpoints
                 id,
                 updatedApplication.CompanyName,
                 updatedApplication.Title,
-                updatedApplication.Seniority,
-                updatedApplication.Deadline,
-                updatedApplication.IsApplied
+                updatedApplication.Deadline
                 );
 
             return Results.NoContent();

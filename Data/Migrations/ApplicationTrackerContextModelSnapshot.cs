@@ -30,12 +30,6 @@ namespace JobApplicationTracker.Api.Data.Migrations
                     b.Property<DateOnly>("Deadline")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsApplied")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Seniority")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("TitleId")
                         .HasColumnType("INTEGER");
 

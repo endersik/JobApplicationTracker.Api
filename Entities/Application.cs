@@ -9,8 +9,5 @@ public class Application
 
     public int TitleId { get; set; }
     public Title? Title { get; set; }
-
-    public Seniority Seniority { get; set; }
     public DateOnly Deadline { get; set; }
-    public bool IsApplied { get; set; }
 }

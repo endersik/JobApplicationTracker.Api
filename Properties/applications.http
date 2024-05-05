@@ -12,9 +12,7 @@ Content-Type: application/json
 {
     "companyName": "JP Morgan",
     "title": "DevOps Engineer",
-    "seniority": 1,
-    "deadline": "2024-02-02",
-    "isApplied": false
+    "deadline": "2024-02-02"
 }
 
 ###
@@ -26,9 +24,7 @@ Content-Type: application/json
     "id": 2,
     "companyName": "Apple",
     "title": "Swift Developer",
-    "seniority": 3,
     "deadline": "2024-05-12",
-    "isApplied": true
 }
 
 ###

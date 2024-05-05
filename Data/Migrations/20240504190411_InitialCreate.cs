@@ -32,9 +32,7 @@ namespace JobApplicationTracker.Api.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     CompanyName = table.Column<string>(type: "TEXT", nullable: false),
                     TitleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Seniority = table.Column<int>(type: "INTEGER", nullable: false),
-                    Deadline = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    IsApplied = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Deadline = table.Column<DateOnly>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
