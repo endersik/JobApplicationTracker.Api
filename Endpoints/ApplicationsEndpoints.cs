@@ -1,4 +1,7 @@
-﻿using JobApplicationTracker.Api.Dtos;
+﻿using JobApplicationTracker.Api.Data;
+using JobApplicationTracker.Api.Dtos;
+using JobApplicationTracker.Api.Entities;
+using JobApplicationTracker.Api.Mapping;
 
 namespace JobApplicationTracker.Api.Endpoints;
 
@@ -35,17 +38,18 @@ public static class ApplicationsEndpoints
             })
             .WithName(GetApplicationEndpointName);
 
-        group.MapPost("/", (CreateApplicationDto newApplication) => {
-            ApplicationDto application = new(
-                applications.Count + 1,
-                newApplication.CompanyName,
-                newApplication.Title,
-                newApplication.Deadline
-            );
+        group.MapPost("/", (CreateApplicationDto newApplication, ApplicationTrackerContext dbContext) => {
+            
+            Application application = newApplication.ToEntity();
+            application.Title = dbContext.Titles.Find(newApplication.TitleId);
 
-            applications.Add(application);
+            dbContext.Applications.Add(application);
+            dbContext.SaveChanges();
 
-            return Results.CreatedAtRoute(GetApplicationEndpointName, new { id = application.Id }, application);
+            return Results.CreatedAtRoute(
+                GetApplicationEndpointName,
+                new { id = application.Id },
+                application.ToDto());
         });
 
         group.MapPut("/{id}", (int id, UpdateApplicationDto updatedApplication) => {

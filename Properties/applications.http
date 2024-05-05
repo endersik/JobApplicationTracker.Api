@@ -10,21 +10,20 @@ POST http://localhost:5210/applications
 Content-Type: application/json
 
 {
-    "companyName": "JP Morgan",
-    "title": "DevOps Engineer",
-    "deadline": "2024-02-02"
+    "companyName": "Apple",
+    "titleId": 3,
+    "deadline": "2024-05-12"
 }
 
 ###
 
-PUT http://localhost:5210/applications/5
+PUT http://localhost:5210/applications/2
 Content-Type: application/json
 
 {
-    "id": 2,
     "companyName": "Apple",
-    "title": "Swift Developer",
-    "deadline": "2024-05-12",
+    "titleId": 3,
+    "deadline": "2024-05-12"
 }
 
 ###
