@@ -13,11 +13,29 @@ public static class ApplicationMapping
         };
     }
 
-    public static ApplicationDto ToDto(this Application application){
+    public static Application ToEntity(this UpdateApplicationDto application, int id){
+        return new Application(){
+            Id = id,
+            CompanyName = application.CompanyName,
+            TitleId = application.TitleId,
+            Deadline = application.Deadline
+        };
+    }
+
+    public static ApplicationSummaryDto ToApplicationSummaryDto(this Application application){
         return new(
                 application.Id,
                 application.CompanyName,
                 application.Title!.Name,
+                application.Deadline
+            );
+    }
+
+    public static ApplicationDetailsDto ToApplicationDetailsDto(this Application application){
+        return new(
+                application.Id,
+                application.CompanyName,
+                application.TitleId,
                 application.Deadline
             );
     }

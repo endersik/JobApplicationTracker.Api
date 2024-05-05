@@ -2,6 +2,7 @@
 using JobApplicationTracker.Api.Dtos;
 using JobApplicationTracker.Api.Entities;
 using JobApplicationTracker.Api.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobApplicationTracker.Api.Endpoints;
 
@@ -9,39 +10,27 @@ public static class ApplicationsEndpoints
 {
     const string GetApplicationEndpointName = "GetApplication";
 
-    private static readonly List<ApplicationDto> applications = [
-        new (
-            1,
-            "Microsoft", 
-            "Cloud Engineer",
-            new DateOnly(2024, 3, 17)
-        ),
-
-        new (
-            2,
-            "Apple",
-            "iOS Developer",
-            new DateOnly(2024, 5, 12)
-        )
-    ];
-
     public static RouteGroupBuilder MapApplicationsEndpoints(this WebApplication app){
         var group = app.MapGroup("applications")
                         .WithParameterValidation();
 
-        group.MapGet("/", () => applications);
+        group.MapGet("/", (ApplicationTrackerContext dbContext) =>
+             dbContext.Applications
+                      .Include(application => application.Title)
+                      .Select(application => application.ToApplicationSummaryDto())
+                      .AsNoTracking());
 
-        group.MapGet("/{id}", (int id) => {
-            ApplicationDto? application = applications.Find(application => application.Id == id);
+        group.MapGet("/{id}", (int id, ApplicationTrackerContext dbContext) => {
+            Application? application = dbContext.Applications.Find(id);
 
-            return application is null ? Results.NotFound() : Results.Ok(application);
+            return application is null ?
+                Results.NotFound() : Results.Ok(application.ToApplicationDetailsDto());
             })
             .WithName(GetApplicationEndpointName);
 
         group.MapPost("/", (CreateApplicationDto newApplication, ApplicationTrackerContext dbContext) => {
             
             Application application = newApplication.ToEntity();
-            application.Title = dbContext.Titles.Find(newApplication.TitleId);
 
             dbContext.Applications.Add(application);
             dbContext.SaveChanges();
@@ -49,29 +38,30 @@ public static class ApplicationsEndpoints
             return Results.CreatedAtRoute(
                 GetApplicationEndpointName,
                 new { id = application.Id },
-                application.ToDto());
+                application.ToApplicationDetailsDto());
         });
 
-        group.MapPut("/{id}", (int id, UpdateApplicationDto updatedApplication) => {
-            var index = applications.FindIndex(application => application.Id == id);
+        group.MapPut("/{id}", (int id, UpdateApplicationDto updatedApplication, ApplicationTrackerContext dbContext) => {
+            var existingApplication = dbContext.Applications.Find(id);
 
-            if(index == -1){
+            if(existingApplication is null){
                 return Results.NotFound();
             }
 
-            applications[index] = new ApplicationDto(
-                id,
-                updatedApplication.CompanyName,
-                updatedApplication.Title,
-                updatedApplication.Deadline
-                );
+            dbContext.Entry(existingApplication)
+                     .CurrentValues
+                     .SetValues(updatedApplication.ToEntity(id));
+            
+            dbContext.SaveChanges();
 
             return Results.NoContent();
         });
 
-        group.MapDelete("/{id}", (int id) => {
+        group.MapDelete("/{id}", (int id, ApplicationTrackerContext dbContext) => {
             
-            applications.RemoveAll(application => application.Id == id);
+            dbContext.Applications
+                    .Where(application => application.Id == id)
+                    .ExecuteDelete();
             
             return Results.NoContent();
         }); 

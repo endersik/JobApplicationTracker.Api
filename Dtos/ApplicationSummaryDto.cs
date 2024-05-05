@@ -1,6 +1,6 @@
 ﻿namespace JobApplicationTracker.Api.Dtos;
 
-public record class ApplicationDto(
+public record class ApplicationSummaryDto(
     int Id,
     string CompanyName,
     string Title,
