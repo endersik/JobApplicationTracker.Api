@@ -10,6 +10,7 @@ builder.Services.AddSqlite<ApplicationTrackerContext>(connString);
 var app = builder.Build();
 
 app.MapApplicationsEndpoints();
+app.MapTitlesEndpoints();
 
 await app.MigrateDbAsync();
 
